@@ -14,4 +14,4 @@ go run main.go
 ```
 
 Then open in browser:
-http://localhost:8080/wallet/HGxXxtqDbPHz2nkAAh8ABu8KAVUdCHXVVmgPH6Q3PQNh
+http://localhost:8080/wallet/1BWutmTvYPwDtmw9abTkS4Ssr8no61spGAvW1X6NDix
