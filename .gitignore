@@ -1,0 +1,40 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Build and IDE folders
+bin/
+build/
+dist/
+.vscode/
+.idea/
+.DS_Store
+
+# Dependency directories
+vendor/
+
+# Go modules cache (if ever used)
+go.sum
+
+# Logs
+*.log
+
+# API keys or local config (add manually if needed)
+.env
+*.env
+
+# SQLite or local data
+*.db
+*.sqlite
+*.sqlite3
+
+# MacOS noise
+__MACOSX/
+
+# Node (in case you add frontend later)
+node_modules/
