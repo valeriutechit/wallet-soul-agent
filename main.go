@@ -14,9 +14,18 @@ func main() {
 	r.HandleFunc("/wallet/{address}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		address := vars["address"]
+		report := agent.GenerateSoulReport(address)
 
-		soul := agent.AnalyzeWallet(address)
-		fmt.Fprintln(w, soul)
+		// Текстовый вывод — красиво, поэтично
+		fmt.Fprintf(w, "📍 Address: %s\n", report.Address)
+		fmt.Fprintf(w, "🧠 Archetype: %s\n", report.Profile)
+		fmt.Fprintf(w, "🪞 Reflection:\n%s\n", report.Reflection)
+		fmt.Fprintf(w, "💎 Tokens:\n")
+		for _, t := range report.Tokens {
+			if t.UiAmount > 0 {
+				fmt.Fprintf(w, " - %s: %.4f\n", t.Symbol, t.UiAmount)
+			}
+		}
 	})
 
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
