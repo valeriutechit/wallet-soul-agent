@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -25,6 +26,21 @@ func main() {
 			if t.UiAmount > 0 {
 				fmt.Fprintf(w, " - %s: %.4f\n", t.Symbol, t.UiAmount)
 			}
+		}
+	})
+
+	r.HandleFunc("/api/wallet/{address}", func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		address := vars["address"]
+		report := agent.GenerateSoulReport(address)
+
+		// Установим тип ответа
+		w.Header().Set("Content-Type", "application/json")
+
+		// Сконвертируем структуру в JSON
+		err := json.NewEncoder(w).Encode(report)
+		if err != nil {
+			http.Error(w, "Failed to encode response", http.StatusInternalServerError)
 		}
 	})
 
