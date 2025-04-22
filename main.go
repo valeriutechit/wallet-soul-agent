@@ -4,13 +4,28 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"os"
+	
 	"net/http"
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 	"wallet-soul-agent/agent"
 )
 
 func main() {
 	r := mux.NewRouter()
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("❌ Error loading .env file")
+	}
+
+	if os.Getenv("TELEGRAM_BOT_TOKEN") == "" || os.Getenv("OPENAI_API_KEY") == "" {
+		log.Fatal("❌ Set TELEGRAM_BOT_TOKEN and OPENAI_API_KEY in .env")
+	}
+
+	// Запускаем Telegram бота
+	agent.StartTelegramBot()
 
 	r.HandleFunc("/wallet/{address}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
