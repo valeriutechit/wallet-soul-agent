@@ -5,14 +5,18 @@ import (
 	"fmt"
 	"log"
 	"os"
-	
+
 	"net/http"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"wallet-soul-agent/agent"
+	"wallet-soul-agent/db"
 )
 
 func main() {
+	_ = godotenv.Load()
+	db.InitDB() // ← инициализация базы
+
 	r := mux.NewRouter()
 
 	err := godotenv.Load()
@@ -25,7 +29,7 @@ func main() {
 	}
 
 	// Запускаем Telegram бота
-	agent.StartTelegramBot()
+	go agent.StartTelegramBot()
 
 	r.HandleFunc("/wallet/{address}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)

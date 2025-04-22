@@ -2,6 +2,7 @@ package agent
 
 import (
 	"wallet-soul-agent/utils"
+	"wallet-soul-agent/db"
 )
 
 func GenerateSoulReport(address string) SoulReport {
@@ -17,6 +18,8 @@ func GenerateSoulReport(address string) SoulReport {
 
 	profile := DetectProfile(tokens)
 	reflection := GenerateReflection(tokens, profile)
+
+	db.SaveReport(address, profile, reflection)
 
 	return SoulReport{
 		Address:    address,
