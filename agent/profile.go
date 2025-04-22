@@ -1,3 +1,66 @@
+// package agent
+
+// import (
+// 	"strings"
+// 	"wallet-soul-agent/utils"
+// )
+
+// // карта токенов → архетипов
+// var tokenArchetypes = map[string]string{
+// 	"SOL":  "Monk",
+// 	"JUP":  "Strategist",
+// 	"BONK": "Goblin",
+// 	"BOME": "Meta Joker",
+// 	"PEPE": "Memelord",
+// 	"USDC": "Safeholder",
+// 	"USDT": "Corporate Sleeper",
+// 	"SHDW": "AI Priest",
+// 	"PRCL": "Cultist",
+// 	"WEN":  "Dreamer",
+// }
+
+// // запасной список архетипов
+// var fallbackArchetypes = []string{
+// 	"Nomad", "Shadow", "Ghost", "Invoker", "Wanderer", "Echo",
+// }
+
+// // генератор архетипа V2
+// func DetectProfileV2(tokens []utils.Token) string {
+// 	archetypeCount := make(map[string]int)
+
+// 	for _, t := range tokens {
+// 		if t.UiAmount <= 0 {
+// 			continue
+// 		}
+
+// 		symbol := strings.ToUpper(t.Symbol)
+// 		if arch, ok := tokenArchetypes[symbol]; ok {
+// 			archetypeCount[arch]++
+// 		}
+// 	}
+
+// 	// special case — если есть только SOL
+// 	if len(archetypeCount) == 1 && archetypeCount["Monk"] > 0 {
+// 		return "Monk"
+// 	}
+
+// 	// выбери наиболее "редкий" или сильный архетип
+// 	var selected string
+// 	var maxCount int
+// 	for arch, count := range archetypeCount {
+// 		if count >= maxCount && arch != "Monk" {
+// 			maxCount = count
+// 			selected = arch
+// 		}
+// 	}
+
+// 	if selected != "" {
+// 		return selected
+// 	}
+
+// 	return "Monk"
+// }
+
 package agent
 
 import "wallet-soul-agent/utils"

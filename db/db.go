@@ -8,6 +8,12 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+type CachedReport struct {
+	Address    string
+	Profile    string
+	Reflection string
+}
+
 var DB *sql.DB
 
 func InitDB() {
@@ -46,3 +52,20 @@ func SaveReport(address, profile, reflection string) {
 		log.Println("❌ Insert failed:", err)
 	}
 }
+
+func GetCachedReport(address string) (*CachedReport, error) {
+	row := DB.QueryRow("SELECT profile, reflection FROM soul_reports WHERE address = ? ORDER BY timestamp DESC LIMIT 1", address)
+
+	var profile, reflection string
+	err := row.Scan(&profile, &reflection)
+	if err != nil {
+		return nil, err
+	}
+
+	return &CachedReport{
+		Address:    address,
+		Profile:    profile,
+		Reflection: reflection,
+	}, nil
+}
+
