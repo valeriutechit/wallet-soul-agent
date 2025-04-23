@@ -1,21 +1,8 @@
 import { GetServerSideProps } from 'next'
-
-type Token = {
-  mint: string
-  name: string
-  symbol: string
-  amount: number
-}
-
-type Report = {
-  Address: string
-  Profile: string
-  Reflection: string
-  Tokens: Token[]
-}
+import { type WalletReport } from '@/types/report'
 
 type Props = {
-  report: Report | null
+  report: WalletReport | null
 }
 
 export default function WalletPage({ report }: Props) {
@@ -25,21 +12,21 @@ export default function WalletPage({ report }: Props) {
   
   console.log(report)
 
-  const currentUrl = `https://walletsoul.xyz/wallet/${report.Address}`
-  const customText = `🧙 Check out the soul of this wallet: ${report.Profile} — ${report.Reflection}`
+  const currentUrl = `https://walletsoul.xyz/wallet/${report.address}`
+  const customText = `🧙 Check out the soul of this wallet: ${report.profile} — ${report.reflection}`
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white p-6">
       <div className="w-full max-w-md bg-zinc-900 border border-zinc-700 p-6 rounded-xl">
         <h1 className="text-2xl font-bold mb-4">🧙 Wallet Soul Agent</h1>
-        <p className="mb-2 text-zinc-400 text-sm">📍 <span className="text-white">Address:</span> {report.Address}</p>
-        <p className="mb-2">🧠 <span className="font-semibold">Archetype:</span> <span className="text-indigo-400">{report.Profile}</span></p>
+        <p className="mb-2 text-zinc-400 text-sm">📍 <span className="text-white">Address:</span> {report.address}</p>
+        <p className="mb-2">🧠 <span className="font-semibold">Archetype:</span> <span className="text-indigo-400">{report.profile}</span></p>
         <p className="mb-2">🪞 <span className="font-semibold">Reflection:</span></p>
-        <p className="italic text-zinc-300 border-l-4 border-indigo-500 pl-4">{report.Reflection}</p>
+        <p className="italic text-zinc-300 border-l-4 border-indigo-500 pl-4">{report.reflection}</p>
         <p className="mt-4 font-semibold">💎 Tokens:</p>
         <ul className="list-disc list-inside text-zinc-300 text-sm">
-          {report.Tokens.map((t, idx) => (
-            <li key={idx}>{t.symbol}: {t.amount.toFixed(4)}</li>
+          {report.tokens.map((token, idx) => (
+            <li key={idx}>{token.symbol}: {token.amount.toFixed(4)}</li>
           ))}
         </ul>
       </div>

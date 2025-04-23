@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import Head from 'next/head'
+import { type Token, type WalletReport } from '@/types/report'
 
 export default function Home() {
   const [address, setAddress] = useState('')
-  const [report, setReport] = useState<any>(null)
+  const [report, setReport] = useState<WalletReport | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   const fetchSoul = async () => {
@@ -11,10 +12,15 @@ export default function Home() {
     try {
       const res = await fetch(`http://localhost:8080/api/wallet/${address}`)
       if (!res.ok) throw new Error('Server error or wallet not found')
-      const data = await res.json()
+
+      const data: WalletReport = await res.json()
       setReport(data)
-    } catch (err: any) {
-      setError(err.message || 'Unexpected error')
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message)
+      } else {
+        setError('Unexpected error')
+      }
       setReport(null)
     }
   }
@@ -36,7 +42,7 @@ export default function Home() {
             className="bg-zinc-900 px-4 py-2 text-sm text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             placeholder="Enter Solana wallet address"
             value={address}
-            onChange={(e) => setAddress(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAddress(e.target.value)}
           />
           <button
             onClick={fetchSoul}
@@ -59,7 +65,7 @@ export default function Home() {
             <p className="italic text-zinc-300 text-sm border-l-4 border-indigo-500 pl-4">{report.reflection}</p>
             <p className="mt-4 font-semibold text-sm">💎 Tokens:</p>
             <ul className="list-disc list-inside text-zinc-300 text-sm">
-              {report.tokens.map((t: any, idx: number) => (
+              {report.tokens.map((t: Token, idx: number) => (
                 <li key={idx}>
                   {t.symbol}: {t.amount.toFixed(4)}
                 </li>
