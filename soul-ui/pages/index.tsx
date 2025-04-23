@@ -67,6 +67,15 @@ export default function Home() {
             </ul>
           </div>
         )}
+
+        <a
+          href="https://t.me/wallet_soul_agent_bot"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded shadow transition mt-6"
+        >
+          🤖 Run in Telegram
+        </a>
       </div>
     </>
   )

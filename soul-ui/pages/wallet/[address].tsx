@@ -22,9 +22,14 @@ export default function WalletPage({ report }: Props) {
   if (!report) {
     return <div className="text-red-500 p-10">❌ Wallet not found or server error</div>
   }
+  
+  console.log(report)
+
+  const currentUrl = `https://walletsoul.xyz/wallet/${report.Address}`
+  const customText = `🧙 Check out the soul of this wallet: ${report.Profile} — ${report.Reflection}`
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black text-white p-6">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white p-6">
       <div className="w-full max-w-md bg-zinc-900 border border-zinc-700 p-6 rounded-xl">
         <h1 className="text-2xl font-bold mb-4">🧙 Wallet Soul Agent</h1>
         <p className="mb-2 text-zinc-400 text-sm">📍 <span className="text-white">Address:</span> {report.Address}</p>
@@ -38,6 +43,17 @@ export default function WalletPage({ report }: Props) {
           ))}
         </ul>
       </div>
+
+      {report && (
+        <a
+          href={`https://t.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(customText)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded shadow transition mt-6"
+        >
+          📤 Share in Telegram
+        </a>
+      )}
     </div>
   )
 }
