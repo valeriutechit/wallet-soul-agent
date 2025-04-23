@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
@@ -24,7 +25,6 @@ func StartTelegramBot() {
 
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
-
 	updates := bot.GetUpdatesChan(u)
 
 	for update := range updates {
@@ -32,20 +32,31 @@ func StartTelegramBot() {
 			continue
 		}
 
-		address := update.Message.Text
-		report := GenerateSoulReport(address)
+		msg := update.Message
+		text := strings.TrimSpace(msg.Text)
 
-		reply := fmt.Sprintf(`📍 Address: %s
-🧠 Archetype: %s
-🪞 Reflection: %s
-💎 Tokens:
-`, report.Address, report.Profile, report.Reflection)
+		if strings.HasPrefix(text, "/start") {
+			parts := strings.Split(text, " ")
+			if len(parts) < 2 {
+				bot.Send(tgbotapi.NewMessage(msg.Chat.ID, "❗ Usage: /start <wallet_address>"))
+				continue
+			}
 
-		for _, t := range report.Tokens {
-			reply += fmt.Sprintf("• %s: %.4f\n", t.Symbol, t.UiAmount)
+			address := parts[1]
+			report := GenerateSoulReport(address)
+
+			reply := fmt.Sprintf("📍 Address: %s\n🧠 Archetype: %s\n🪞 Reflection:\n%s\n💎 Tokens:\n",
+				report.Address, report.Profile, report.Reflection)
+
+			for _, t := range report.Tokens {
+				if t.UiAmount > 0 {
+					reply += fmt.Sprintf("• %s: %.4f\n", t.Symbol, t.UiAmount)
+				}
+			}
+
+			bot.Send(tgbotapi.NewMessage(msg.Chat.ID, reply))
+		} else {
+			bot.Send(tgbotapi.NewMessage(msg.Chat.ID, "👋 Send /start <wallet_address> to analyze a wallet"))
 		}
-
-		msg := tgbotapi.NewMessage(update.Message.Chat.ID, reply)
-		bot.Send(msg)
 	}
 }
