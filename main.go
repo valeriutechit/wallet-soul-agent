@@ -21,11 +21,11 @@ func main() {
 
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("❌ Error loading .env file")
+		log.Println("⚠️ .env file not found, using container env vars")
 	}
 
 	if os.Getenv("TELEGRAM_BOT_TOKEN") == "" || os.Getenv("OPENAI_API_KEY") == "" {
-		log.Fatal("❌ Set TELEGRAM_BOT_TOKEN and OPENAI_API_KEY in .env")
+		log.Fatal("❌ Missing TELEGRAM_BOT_TOKEN or OPENAI_API_KEY environment variables")
 	}
 
 	// Запускаем Telegram бота

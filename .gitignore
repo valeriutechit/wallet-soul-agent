@@ -18,9 +18,6 @@ dist/
 # Dependency directories
 vendor/
 
-# Go modules cache (if ever used)
-go.sum
-
 # Logs
 *.log
 
