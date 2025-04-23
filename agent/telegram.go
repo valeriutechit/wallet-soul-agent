@@ -4,13 +4,21 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"regexp"
 	"strings"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/mr-tron/base58"
+	"wallet-soul-agent/db"
 )
 
+func isValidSolanaAddress(address string) bool {
+	decoded, err := base58.Decode(address)
+	return err == nil && len(decoded) == 32
+}
+
 func StartTelegramBot() {
+	db.InitDB()
+
 	botToken := os.Getenv("TELEGRAM_BOT_TOKEN")
 	if botToken == "" {
 		log.Fatal("❌ TELEGRAM_BOT_TOKEN not set")
@@ -28,8 +36,6 @@ func StartTelegramBot() {
 	u.Timeout = 60
 	updates := bot.GetUpdatesChan(u)
 
-	solanaRegex := regexp.MustCompile(`^[1-9A-HJ-NP-Za-km-z]{32,44}$`)
-
 	for update := range updates {
 		if update.Message == nil {
 			continue
@@ -44,8 +50,12 @@ func StartTelegramBot() {
 			continue
 		}
 
-		if solanaRegex.MatchString(text) {
+		if isValidSolanaAddress(text) {
+			log.Printf("✅ Valid address received: %s", text) // 👈 лог
+
 			report := GenerateSoulReport(text)
+
+			log.Printf("🧠 Generated report: %+v", report) // 👈 лог отчёта
 
 			reply := fmt.Sprintf("📍 Address: %s\n🧠 Archetype: %s\n🪞 Reflection:\n%s\n💎 Tokens:\n",
 				report.Address, report.Profile, report.Reflection)
@@ -57,9 +67,8 @@ func StartTelegramBot() {
 			}
 
 			bot.Send(tgbotapi.NewMessage(msg.Chat.ID, reply))
-		} else {
+			} else {
 			bot.Send(tgbotapi.NewMessage(msg.Chat.ID, "⚠️ Invalid address. Please send a valid Solana wallet address."))
 		}
 	}
 }
-
