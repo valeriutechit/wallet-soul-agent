@@ -20,6 +20,7 @@ vendor/
 
 # Ignore built binaries
 app
+telegram/app
 
 # Logs
 *.log
