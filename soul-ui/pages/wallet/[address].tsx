@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { GetServerSideProps } from 'next'
 import { type WalletReport } from '@/types/report'
 
@@ -15,9 +16,9 @@ export default function WalletPage({ report }: Props) {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white p-6">
-      <a href="/" className="mb-4 text-center w-full text-sm text-indigo-400 hover:underline self-start">
+      <Link href="/" className="mb-4 text-center w-full text-sm text-indigo-400 hover:underline self-start">
         ← Back to Home
-      </a>
+      </Link>
 
       <div className="w-full max-w-md bg-zinc-900 border border-zinc-700 p-6 rounded-xl">
         <h1 className="text-2xl font-bold mb-4">🧙 Wallet Soul Agent</h1>

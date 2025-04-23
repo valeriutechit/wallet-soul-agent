@@ -8,6 +8,8 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
+  const isValidAddress = address.trim().length > 0;
+
   const fetchSoul = async () => {
     setError(null)
     setLoading(true)
@@ -59,8 +61,8 @@ export default function Home() {
             ) : (
               <button
                 onClick={loading ? undefined : fetchSoul}
-                disabled={loading}
-                className="bg-indigo-600 min-h-[36px] hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-400/40 transition-all animate-fade-in duration-300"
+                disabled={loading || !isValidAddress}
+                className="bg-indigo-600 disabled:opacity-50 disabled:bg-gray-600 min-h-[36px] hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-400/40 transition-all animate-fade-in duration-300"
               >
                 🔍 Analyze Soul
               </button>
