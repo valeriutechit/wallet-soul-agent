@@ -10,7 +10,7 @@ import (
 	"wallet-soul-agent/agent"
 )
 
-func main() {
+func Start() {
 	_ = godotenv.Load()
 
 	if os.Getenv("TELEGRAM_BOT_TOKEN") == "" || os.Getenv("OPENAI_API_KEY") == "" {
@@ -29,4 +29,8 @@ func main() {
 	})
 	log.Printf("🌐 Keep-alive server running on :%s", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
+}
+
+func main() {
+  Start()
 }

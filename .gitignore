@@ -18,6 +18,9 @@ dist/
 # Dependency directories
 vendor/
 
+# Ignore built binaries
+app
+
 # Logs
 *.log
 
