@@ -14,7 +14,7 @@ export default function Home() {
     setError(null)
     setLoading(true)
     try {
-      const res = await fetch(`http://localhost:8080/api/wallet/${address}`)
+      const res = await fetch(`/api/wallet/${address}`)
       if (!res.ok) throw new Error('Server error or wallet not found')
       await res.json() // Just to check it works
       router.push(`/wallet/${address}`)

@@ -11,7 +11,11 @@ export default function WalletPage({ report }: Props) {
     return <div className="text-red-500 p-10">❌ Wallet not found or server error</div>
   }
 
-  const currentUrl = `https://walletsoul.xyz/wallet/${report.address}`
+  const baseUrl = typeof window !== 'undefined'
+    ? window.location.origin
+    : process.env.NEXT_PUBLIC_SITE_URL || 'https://wallet-soul-agent.vercel.app/'
+
+  const currentUrl = `${baseUrl}/wallet/${report.address}`
   const customText = `🧙 Check out the soul of this wallet: ${report.profile} — ${report.reflection}`
 
   return (
