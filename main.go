@@ -34,9 +34,6 @@ func main() {
 		log.Fatal("❌ Missing TELEGRAM_BOT_TOKEN or OPENAI_API_KEY environment variables")
 	}
 
-	// Запускаем Telegram бота
-	go agent.StartTelegramBot()
-
 	r.HandleFunc("/wallet/{address}", func(w http.ResponseWriter, r *http.Request) {
 		enableCORS(w) // ← добавь сюда
 
