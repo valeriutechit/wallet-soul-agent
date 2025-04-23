@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { GetServerSideProps } from 'next'
 import { type WalletReport } from '@/types/report'
+import { API_BASE_URL, SITE_BASE_URL } from '@/lib/config'
 
 type Props = {
   report: WalletReport | null
@@ -11,11 +12,7 @@ export default function WalletPage({ report }: Props) {
     return <div className="text-red-500 p-10">❌ Wallet not found or server error</div>
   }
 
-  const baseUrl = typeof window !== 'undefined'
-    ? window.location.origin
-    : process.env.NEXT_PUBLIC_SITE_URL || 'https://wallet-soul-agent.vercel.app/'
-
-  const currentUrl = `${baseUrl}/wallet/${report.address}`
+  const currentUrl = `${SITE_BASE_URL}/wallet/${report.address}`
   const customText = `🧙 Check out the soul of this wallet: ${report.profile} — ${report.reflection}`
 
   return (
@@ -60,7 +57,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const address = context.params?.address as string
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/wallet/${address}`)
+    const res = await fetch(`${API_BASE_URL}/api/wallet/${address}`)
     const json = await res.json()
 
     return {

@@ -5,8 +5,9 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"wallet-soul-agent/agent"
+
 	"github.com/joho/godotenv"
+	"wallet-soul-agent/agent"
 )
 
 func main() {
@@ -16,12 +17,16 @@ func main() {
 		log.Fatal("❌ Missing TELEGRAM_BOT_TOKEN or OPENAI_API_KEY in env")
 	}
 
-	go agent.StartTelegramBot() // оставляем long polling
+	go agent.StartTelegramBot() // ✅ Telegram long polling в отдельной горутине
 
+	// ✅ Railway ожидает, что сервер слушает PORT
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "✅ Bot is alive")
 	})
-
-	log.Println("🌐 Starting keep-alive server on :8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Printf("🌐 Keep-alive server running on :%s", port)
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }

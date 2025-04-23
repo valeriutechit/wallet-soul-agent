@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { API_BASE_URL } from '@/lib/config'
 
 export default function Home() {
   const [address, setAddress] = useState('')
@@ -14,9 +15,9 @@ export default function Home() {
     setError(null)
     setLoading(true)
     try {
-      const res = await fetch(`/api/wallet/${address}`)
+      const res = await fetch(`${API_BASE_URL}/api/wallet/${address}`)
       if (!res.ok) throw new Error('Server error or wallet not found')
-      await res.json() // Just to check it works
+      await res.json()
       router.push(`/wallet/${address}`)
     } catch (err) {
       if (err instanceof Error) {

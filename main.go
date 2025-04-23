@@ -38,11 +38,12 @@ func main() {
 	go agent.StartTelegramBot()
 
 	r.HandleFunc("/wallet/{address}", func(w http.ResponseWriter, r *http.Request) {
+		enableCORS(w) // ← добавь сюда
+
 		vars := mux.Vars(r)
 		address := vars["address"]
 		report := agent.GenerateSoulReport(address)
 
-		// Текстовый вывод — красиво, поэтично
 		fmt.Fprintf(w, "📍 Address: %s\n", report.Address)
 		fmt.Fprintf(w, "🧠 Archetype: %s\n", report.Profile)
 		fmt.Fprintf(w, "🪞 Reflection:\n%s\n", report.Reflection)
