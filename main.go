@@ -74,7 +74,11 @@ func main() {
 		fmt.Fprintln(w, "👋 Welcome to Wallet Soul Agent. Try /wallet/{address}")
 	})
 
-	fmt.Println("🚀 Server started on http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", r))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	fmt.Printf("🚀 Server started on http://localhost:%s\n", port)
+	log.Fatal(http.ListenAndServe(":"+port, r))
 }
 
