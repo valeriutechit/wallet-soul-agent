@@ -13,6 +13,12 @@ import (
 	"wallet-soul-agent/db"
 )
 
+func enableCORS(w http.ResponseWriter) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+}
+
 func main() {
 	_ = godotenv.Load()
 	db.InitDB() // ← инициализация базы
@@ -49,14 +55,17 @@ func main() {
 	})
 
 	r.HandleFunc("/api/wallet/{address}", func(w http.ResponseWriter, r *http.Request) {
+		enableCORS(w)
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
 		vars := mux.Vars(r)
 		address := vars["address"]
 		report := agent.GenerateSoulReport(address)
 
-		// Установим тип ответа
 		w.Header().Set("Content-Type", "application/json")
-
-		// Сконвертируем структуру в JSON
 		err := json.NewEncoder(w).Encode(report)
 		if err != nil {
 			http.Error(w, "Failed to encode response", http.StatusInternalServerError)

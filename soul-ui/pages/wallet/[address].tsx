@@ -9,26 +9,32 @@ export default function WalletPage({ report }: Props) {
   if (!report) {
     return <div className="text-red-500 p-10">❌ Wallet not found or server error</div>
   }
-  
-  console.log(report)
 
   const currentUrl = `https://walletsoul.xyz/wallet/${report.address}`
   const customText = `🧙 Check out the soul of this wallet: ${report.profile} — ${report.reflection}`
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white p-6">
+      <a href="/" className="mb-4 text-center w-full text-sm text-indigo-400 hover:underline self-start">
+        ← Back to Home
+      </a>
+
       <div className="w-full max-w-md bg-zinc-900 border border-zinc-700 p-6 rounded-xl">
         <h1 className="text-2xl font-bold mb-4">🧙 Wallet Soul Agent</h1>
-        <p className="mb-2 text-zinc-400 text-sm">📍 <span className="text-white">Address:</span> {report.address}</p>
+        <p className="mb-2 text-zinc-400 text-sm">📍 <span className="text-white">Address:</span> <span className="block truncate">{report.address}</span></p>
         <p className="mb-2">🧠 <span className="font-semibold">Archetype:</span> <span className="text-indigo-400">{report.profile}</span></p>
         <p className="mb-2">🪞 <span className="font-semibold">Reflection:</span></p>
         <p className="italic text-zinc-300 border-l-4 border-indigo-500 pl-4">{report.reflection}</p>
         <p className="mt-4 font-semibold">💎 Tokens:</p>
-        <ul className="list-disc list-inside text-zinc-300 text-sm">
-          {report.tokens.map((token, idx) => (
-            <li key={idx}>{token.symbol}: {token.amount.toFixed(4)}</li>
-          ))}
-        </ul>
+        {report.tokens && report.tokens.length > 0 ? (
+          <ul className="list-disc list-inside text-zinc-300 text-sm">
+            {report.tokens.map((token, idx) => (
+              <li key={idx}>{token.symbol}: {token.amount.toFixed(4)}</li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-zinc-500 italic mt-2">No tokens found in this wallet.</p>
+        )}
       </div>
 
       {report && (
@@ -36,7 +42,7 @@ export default function WalletPage({ report }: Props) {
           href={`https://t.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(customText)}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded shadow transition mt-6"
+          className="bg-blue-800 hover:bg-blue-900 text-white font-semibold py-2 px-4 rounded shadow transition mt-6"
         >
           📤 Share in Telegram
         </a>
