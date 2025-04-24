@@ -20,7 +20,7 @@ func GenerateSoulReport(address string) SoulReport {
 	// }
 
 	tokens, _ := utils.FetchTokens(address)
-	
+
 	var balance float64
 	for _, t := range tokens {
 		if t.Symbol == "SOL" {
@@ -30,11 +30,7 @@ func GenerateSoulReport(address string) SoulReport {
 
 	profile, _ := ArchetypeFromBalance(balance)
 
-	fmt.Println("🔑 OPENAI_API_KEY:", os.Getenv("OPENAI_API_KEY"))
-	fmt.Println("🧠 Generating reflection using OpenAI...")
-
 	reflection := GenerateReflectionWithOpenAI(profile, balance)
-	fmt.Println("✅ Got response from OpenAI:", reflection)
 
 	db.SaveReport(address, profile, reflection)
 

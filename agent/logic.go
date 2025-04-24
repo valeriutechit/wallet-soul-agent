@@ -47,5 +47,6 @@ func GenerateReflectionWithOpenAI(archetype string, balance float64) string {
 		return "🤖 Failed to generate poetic reflection."
 	}
 
+	fmt.Println("RESP, GPT", resp);
 	return resp.Choices[0].Message.Content
 }

@@ -95,7 +95,7 @@ Start command:
 Valerii Bodnarchuk — [LinkedIn](https://www.linkedin.com/in/valerii-bodnarchuk) | [Telegram](https://t.me/valerii_bodnarchuk)
 
 ## ✨ Credit
-Built in 3 days by @valerii_bodnarchuk & GPT (architect-assistant).
+Built in 4 days by @valerii_bodnarchuk & GPT (architect-assistant).
 
 ## 🪐 License
 MIT
