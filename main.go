@@ -21,7 +21,7 @@ func enableCORS(w http.ResponseWriter) {
 
 func main() {
 	_ = godotenv.Load()
-	db.InitDB() // ← инициализация базы
+	db.InitDB()
 
 	r := mux.NewRouter()
 
@@ -35,7 +35,7 @@ func main() {
 	}
 
 	r.HandleFunc("/wallet/{address}", func(w http.ResponseWriter, r *http.Request) {
-		enableCORS(w) // ← добавь сюда
+		enableCORS(w)
 
 		vars := mux.Vars(r)
 		address := vars["address"]

@@ -1,73 +1,101 @@
 # 🧙 Wallet Soul Agent
+Analyze the soul of any Solana wallet through GPT-powered archetypes and poetic reflection.
 
-> AI-powered Web3 soul analyzer — get an archetype + poetic reflection of any Solana wallet. Telegram-ready. Open-source. Instant.
+## 🌐 Live Demo  
+[wallet-soul-agent.vercel.app](https://wallet-soul-agent.vercel.app)
 
----
+## 🧠 Stack
+- **Frontend**: Next.js + Tailwind CSS
+- **Backend**: Go + SQLite + OpenAI API
+- **Bot**: Telegram Bot API (go-telegram-bot-api)
 
-## ⚡ What is it?
-**Wallet Soul Agent** is a minimalistic AI + Web3 project that:
+## 📦 Features
+- GPT-based soul archetype + poetic reflection
+- Telegram bot for wallet analysis
+- API endpoint: `/api/wallet/:address`
+- SSR frontend for sharing
+- Caching in SQLite for faster re-queries
 
-- Takes a **Solana wallet address**
-- Fetches its token balance
-- Sends it to **GPT** for analysis
-- Returns:
-  - 🧠 **Archetype** (Monk, Alchemist, etc.)
-  - 🪞 **Reflection** (poetic GPT response)
+## 🚀 Getting Started
 
----
+### Prerequisites
+- Node.js + npm
+- Go (1.20+)
 
-## 📦 Tech Stack
-- **Go (Golang)** — backend + Telegram bot
-- **OpenAI API** — for archetype + reflection
-- **Solana RPC** — to fetch wallet token balances
-- **Next.js (React)** — SSR frontend
-- **Tailwind CSS** — UI styling
-- **SQLite** — lightweight caching
-
----
-
-## 🧪 Try it out
-- 👉 [Telegram bot](https://t.me/wallet_soul_agent_bot)
-- 👉 [Web UI](https://soon.com) ← _coming after deploy_
-
----
-
-## 🔧 Run locally
-
+### Environment Variables
+Create `.env` at the root:
 ```bash
-git clone https://github.com/your-name/wallet-soul-agent.git
-cd wallet-soul-agent
-
-# 1. Backend
-cp .env.example .env
-# Add your OpenAI + Telegram tokens
-
-go run main.go
-
-# 2. Frontend (in soul-ui/)
-cd soul-ui
-npm install
-npm run dev
+OPENAI_API_KEY=your_openai_key
+TELEGRAM_BOT_TOKEN=your_telegram_token
+PORT=8080
 ```
 
----
+Frontend uses `.env.local`:
+```bash
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
 
-## 📸 Screenshot
-![wallet-soul-agent-preview](public/screenshot.png)
+### Install Dependencies
+```bash
+go mod tidy
 
----
+cd soul-ui
+npm install
+```
 
-## 💭 Why?
-Because:
-> _"The soul leaves a trace — even on-chain."_
+### Run Locally
+```bash
+# frontend (http://localhost:3000)
+cd soul-ui
+npm run dev
 
----
+# backend API (http://localhost:8080)
+cd ..
+go run main.go
+
+# OR telegram bot (http://localhost:8080, responds in chat)
+cd telegram
+go run main.go
+```
+
+## 🧪 Testing
+To test a wallet, try:
+```
+1BWutmTvYPwDtmw9abTkS4Ssr8no61spGAvW1X6NDix
+```
+
+## 📥 Deploy
+
+### Frontend: Vercel
+Deploy the `soul-ui` directory to Vercel.
+
+### Backend API: Render or Railway
+Deploy the root directory with the build command:
+```
+go build -o app ./main.go
+```
+Start command:
+```
+./app
+```
+
+### Telegram Bot: Railway
+Create a new service with the build command:
+```
+go build -o app ./telegram
+```
+Start command:
+```
+./app
+```
+
+> **Note:** If you encounter deployment issues on Railway, try creating a new service instead of modifying an existing one to avoid cache problems.
+
+## ✍️ Author
+Valerii Bodnarchuk — [LinkedIn](https://www.linkedin.com/in/valerii-bodnarchuk) | [Telegram](https://t.me/valerii_bodnarchuk)
 
 ## ✨ Credit
-Built in 3 days by [Valerii Bodnarchuk](https://t.me/valeriubodnarchuk) & GPT.
-
----
+Built in 3 days by @valerii_bodnarchuk & GPT (architect-assistant).
 
 ## 🪐 License
-MIT. Use it. Fork it. Remix it. Let's make wallets soulful.
-
+MIT

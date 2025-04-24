@@ -51,11 +51,11 @@ func StartTelegramBot() {
 		}
 
 		if isValidSolanaAddress(text) {
-			log.Printf("✅ Valid address received: %s", text) // 👈 лог
+			log.Printf("✅ Valid address received: %s", text)
 
 			report := GenerateSoulReport(text)
 
-			log.Printf("🧠 Generated report: %+v", report) // 👈 лог отчёта
+			log.Printf("🧠 Generated report: %+v", report)
 
 			reply := fmt.Sprintf("📍 Address: %s\n🧠 Archetype: %s\n🪞 Reflection:\n%s\n💎 Tokens:\n",
 				report.Address, report.Profile, report.Reflection)

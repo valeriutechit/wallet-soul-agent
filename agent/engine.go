@@ -1,42 +1,40 @@
 package agent
 
 import (
-	"fmt"
-	"wallet-soul-agent/utils"
 	"wallet-soul-agent/db"
+	"wallet-soul-agent/utils"
 )
 
 func GenerateSoulReport(address string) SoulReport {
-	if cached, err := db.GetCachedReport(address); err == nil && cached != nil {
-		tokens, _ := utils.FetchTokens(address)
-		fmt.Println("⚡ Using cached report for", address)
-
+	cached, _ := db.GetCachedReport(address)
+	if cached != nil {
 		return SoulReport{
 			Address:    cached.Address,
-			Tokens:     tokens,
 			Profile:    cached.Profile,
 			Reflection: cached.Reflection,
-		}
-	}
-
-	tokens, err := utils.FetchTokens(address)
-	if err != nil {
-		return SoulReport{
-			Address:    address,
 			Tokens:     []utils.Token{},
-			Profile:    "Unknown",
-			Reflection: "This soul is too obscure to be understood.",
 		}
 	}
 
-	profile := DetectProfile(tokens)
-	reflection := GenerateReflection(tokens, profile)
-	db.SaveReport(address, profile, reflection)
+	tokens, _ := utils.FetchTokens(address)
+	var balance float64
+	for _, t := range tokens {
+		if t.Symbol == "SOL" {
+			balance = t.UiAmount
+		}
+	}
 
-	return SoulReport{
+	profile, _ := ArchetypeFromBalance(balance)
+
+	reflection := GenerateReflectionWithOpenAI(profile, balance)
+
+	report := SoulReport{
 		Address:    address,
-		Tokens:     tokens,
 		Profile:    profile,
 		Reflection: reflection,
+		Tokens:     tokens,
 	}
+
+	db.SaveReport(report.Address, report.Profile, report.Reflection)
+	return report
 }

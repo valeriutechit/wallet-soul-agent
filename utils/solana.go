@@ -1,4 +1,3 @@
-// utils/solana.go
 package utils
 
 import (
@@ -9,7 +8,6 @@ import (
 	"net/http"
 )
 
-// Полная структура ответа RPC
 type SolanaRpcResponse struct {
 	Jsonrpc string `json:"jsonrpc"`
 	Result  struct {
@@ -36,12 +34,10 @@ type Token struct {
 }
 
 func FetchTokens(address string) ([]Token, error) {
-	// Используем публичный RPC-endpoint Solana
 	url := "https://api.mainnet-beta.solana.com"
 	
 	fmt.Println("🔍 Requesting from:", url)
 	
-	// Создаем JSON-RPC запрос для getBalance
 	requestBody := map[string]interface{}{
 		"jsonrpc": "2.0",
 		"id":      "1",
@@ -49,14 +45,12 @@ func FetchTokens(address string) ([]Token, error) {
 		"params":  []interface{}{address},
 	}
 	
-	// Конвертируем запрос в JSON
 	requestJSON, err := json.Marshal(requestBody)
 	if err != nil {
 		fmt.Println("❌ Error marshaling request:", err)
 		return nil, err
 	}
 	
-	// Отправляем POST запрос
 	resp, err := http.Post(url, "application/json", bytes.NewBuffer(requestJSON))
 	if err != nil {
 		fmt.Println("❌ Error during request:", err)
@@ -75,27 +69,22 @@ func FetchTokens(address string) ([]Token, error) {
 	fmt.Println("📦 Raw response:")
 	fmt.Println(string(bodyBytes))
 	
-	// Разбираем ответ используя правильную структуру
 	var rpcResp SolanaRpcResponse
 	if err := json.Unmarshal(bodyBytes, &rpcResp); err != nil {
 		fmt.Println("❌ Error unmarshaling JSON:", err)
 		return nil, err
 	}
 	
-	// Проверяем ошибки RPC
 	if rpcResp.Error != nil {
 		return nil, fmt.Errorf("RPC error %d: %s", rpcResp.Error.Code, rpcResp.Error.Message)
 	}
 	
-	// Получаем значение в lamports
 	lamports := rpcResp.Result.Value
 	
-	// Конвертируем lamports в SOL (1 SOL = 10^9 lamports)
 	solBalance := float64(lamports) / 1000000000.0
 	
 	fmt.Printf("✅ Successfully retrieved SOL balance: %f SOL\n", solBalance)
 	
-	// Возвращаем один токен, представляющий SOL
 	tokens := []Token{
 		{
 			Mint:     "So11111111111111111111111111111111111111112", // Native SOL mint address
