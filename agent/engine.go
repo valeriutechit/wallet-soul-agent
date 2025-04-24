@@ -1,8 +1,6 @@
 package agent
 
 import (
-	"fmt"
-	"os"
 	"wallet-soul-agent/db"
 	"wallet-soul-agent/utils"
 )
